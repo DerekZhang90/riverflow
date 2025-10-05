@@ -24,10 +24,14 @@ export const tiers: Array<Tier> = [
       [FrequencyEnum.Yearly]: 5,
       [FrequencyEnum.OneTime]: 1,
     },
+    creem_product_id: {
+      [FrequencyEnum.Monthly]: process.env.NEXT_PUBLIC_CREEM_BASIC_MONTHLY_ID || "prod_5TLtrKUp7537Jgtrx5s1uP",
+      [FrequencyEnum.Yearly]: process.env.NEXT_PUBLIC_CREEM_BASIC_YEARLY_ID || "prod_5m2LBexHimUQ3RvI4mk4Ez",
+    },
     amount: {
-      [FrequencyEnum.Monthly]: 1490,
-      [FrequencyEnum.Yearly]: 15000,
-      [FrequencyEnum.OneTime]: 1590,
+      [FrequencyEnum.Monthly]: 990,    // $9.90
+      [FrequencyEnum.Yearly]: 9900,    // $99.00
+      [FrequencyEnum.OneTime]: 990,    // $9.90
     },
     interval: {
       [FrequencyEnum.Monthly]: "month",
@@ -36,30 +40,33 @@ export const tiers: Array<Tier> = [
     },
     title: "Basic",
     price: {
-      yearly: "$11.9",
-      monthly: "$14.9",
-      onetime: "$15.9",
+      yearly: "$99",
+      monthly: "$9.9",
+      onetime: "$9.9",
     },
     previousPrice: {
-      yearly: "$15.9",
-      monthly: "$15.9",
+      yearly: "",
+      monthly: "",
       onetime: "",
     },
     href: "#",
     featured: false,
     mostPopular: false,
-    description: "For starters and hobbyists that want to try out.",
+    description: "For starters and hobbyists exploring AI image generation",
     features: {
-      yearly: ["1000 credits per year", "All tools available", "Email support"],
+      yearly: ["3600 credits per year", "300 credits/month average", "All AI models", "R2 cloud storage", "Email support"],
       monthly: [
-        "100 credits per month",
-        "All tools available",
+        "300 credits per month",
+        "~300 images",
+        "All AI models",
+        "R2 cloud storage",
         "Email support",
       ],
       onetime: [
-        "100 credits one month",
-        "All tools available",
-        "Email support",
+        "300 credits one time",
+        "~300 images",
+        "All AI models",
+        "R2 cloud storage",
       ],
     },
     buttonText: "Purchase",
@@ -73,10 +80,14 @@ export const tiers: Array<Tier> = [
       [FrequencyEnum.Monthly]: 3,
       [FrequencyEnum.OneTime]: 9,
     },
+    creem_product_id: {
+      [FrequencyEnum.Monthly]: process.env.NEXT_PUBLIC_CREEM_STANDARD_MONTHLY_ID || "prod_gGpwNNaqQTBzfCBYmjdfq",
+      [FrequencyEnum.Yearly]: process.env.NEXT_PUBLIC_CREEM_STANDARD_YEARLY_ID || "prod_43iHTRN9qITBvfcnj9cvWO",
+    },
     amount: {
-      [FrequencyEnum.Yearly]: 28800,
-      [FrequencyEnum.Monthly]: 2790,
-      [FrequencyEnum.OneTime]: 2990,
+      [FrequencyEnum.Yearly]: 19900,   // $199.00
+      [FrequencyEnum.Monthly]: 1990,   // $19.90
+      [FrequencyEnum.OneTime]: 1990,   // $19.90
     },
     interval: {
       [FrequencyEnum.Yearly]: "year",
@@ -84,36 +95,39 @@ export const tiers: Array<Tier> = [
       [FrequencyEnum.OneTime]: "month",
     },
     title: "Standard",
-    description: "For enthusiasts that want to try out.",
+    description: "For enthusiasts who create regularly",
     href: "#",
     mostPopular: true,
     price: {
-      yearly: "$23.9",
-      monthly: "$27.9",
-      onetime: "$29.9",
+      yearly: "$199",
+      monthly: "$19.9",
+      onetime: "$19.9",
     },
     previousPrice: {
-      yearly: "$29.9",
-      monthly: "$29.9",
+      yearly: "",
+      monthly: "",
       onetime: "",
     },
     featured: false,
     features: {
-      yearly: ["2000 credits per year", "All tools available", "Email support"],
+      yearly: ["8400 credits per year", "700 credits/month average", "All AI models", "R2 cloud storage", "Priority email support"],
       monthly: [
-        "200 credits per month",
-        "All tools available",
-        "Email support",
+        "700 credits per month",
+        "~700 images",
+        "All AI models",
+        "R2 cloud storage",
+        "Priority email support",
       ],
       onetime: [
-        "200 credits one month",
-        "All tools available",
-        "Email support",
+        "700 credits one time",
+        "~700 images",
+        "All AI models",
+        "R2 cloud storage",
       ],
     },
     buttonText: "Purchase",
-    buttonColor: "default",
-    buttonVariant: "flat",
+    buttonColor: "primary",
+    buttonVariant: "solid",
   },
   {
     key: TiersEnum.Premium,
@@ -122,10 +136,14 @@ export const tiers: Array<Tier> = [
       [FrequencyEnum.Monthly]: 4,
       [FrequencyEnum.OneTime]: 11,
     },
+    creem_product_id: {
+      [FrequencyEnum.Monthly]: process.env.NEXT_PUBLIC_CREEM_PREMIUM_MONTHLY_ID || "prod_7Rj7nmIGlKFOo8j5KLxztc",
+      [FrequencyEnum.Yearly]: process.env.NEXT_PUBLIC_CREEM_PREMIUM_YEARLY_ID || "prod_3XSyInvwVn7MRQguyO0kga",
+    },
     amount: {
-      [FrequencyEnum.Yearly]: 47000,
-      [FrequencyEnum.Monthly]: 4390,
-      [FrequencyEnum.OneTime]: 4890,
+      [FrequencyEnum.Yearly]: 39900,   // $399.00
+      [FrequencyEnum.Monthly]: 3990,   // $39.90
+      [FrequencyEnum.OneTime]: 3990,   // $39.90
     },
     interval: {
       [FrequencyEnum.Yearly]: "year",
@@ -136,33 +154,36 @@ export const tiers: Array<Tier> = [
     href: "#",
     featured: true,
     mostPopular: false,
-    description: "For professionals that want to try out.",
+    description: "For professionals and power users",
     price: {
-      yearly: "$38.9",
-      monthly: "$43.9",
-      onetime: "$48.9",
+      yearly: "$399",
+      monthly: "$39.9",
+      onetime: "$39.9",
     },
     previousPrice: {
-      yearly: "$48.9",
-      monthly: "$48.9",
+      yearly: "",
+      monthly: "",
       onetime: "",
     },
     priceSuffix: "",
     features: {
-      yearly: ["4200 credits per year", "All tools available", "Email support"],
+      yearly: ["19200 credits per year", "1600 credits/month average", "All AI models", "R2 cloud storage", "Priority support", "Best value - 32% cheaper than official"],
       monthly: [
-        "400 credits per month",
-        "All tools available",
-        "Email support",
+        "1600 credits per month",
+        "~1600 images",
+        "All AI models",
+        "R2 cloud storage",
+        "Priority support",
       ],
       onetime: [
-        "400 credits one month",
-        "All tools available",
-        "Email support",
+        "1600 credits one time",
+        "~1600 images",
+        "All AI models",
+        "R2 cloud storage",
       ],
     },
     buttonText: "Purchase",
-    buttonColor: "default",
-    buttonVariant: "flat",
+    buttonColor: "secondary",
+    buttonVariant: "solid",
   },
 ];

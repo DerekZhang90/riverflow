@@ -48,8 +48,11 @@ CREATE TABLE effect (
   pre_prompt text NULL,                     -- 预设提示词
   created_at timestamp with time zone NULL -- 创建时间
 );
-INSERT INTO effect (id, name, type, des, platform, link, api, is_open, link_name, credit, model, version, pre_prompt, created_at) VALUES (1, 'Kling v2.1', 1, NULL, 'replicate', 'https://replicate.com/kwaivgi/kling-v2.1/api', 'kwaivgi/kling-v2.1', 1, 'kling-v12', 15, 'kwaivgi/kling-v2.1', NULL, NULL, NULL);
-INSERT INTO effect (id, name, type, des, platform, link, api, is_open, link_name, credit, model, version, pre_prompt, created_at) VALUES (2, 'Flux1.1 Pro', 1, NULL, 'replicate', 'https://replicate.com/black-forest-labs/flux-1.1-pro', 'black-forest-labs/flux-1.1-pro', 1, 'flux-1-pro', 1, 'black-forest-labs/flux-1.1-pro', NULL, NULL, NULL);
+-- 插入 AI 模型数据（RiverFlow 项目配置）
+INSERT INTO effect (id, name, type, des, platform, link, api, is_open, link_name, credit, model, version, pre_prompt, created_at) VALUES
+(1, 'RiverFlow', 1, 'RiverFlow 下一代 AI 图片生成模型，极致画质，快速生成', 'custom', 'https://riverflow.art', 'riverflow-v1', 0, 'riverflow', 3, 'riverflow-v1', '1.0', NULL, NOW()),
+(2, 'Seedream 4.0', 1, '高质量图片生成，支持文生图和图生图', 'replicate', 'https://replicate.com/seedream/4.0', 'seedream/4.0', 1, 'seedream-4', 2, 'seedream/4.0', '4.0', NULL, NOW()),
+(3, 'Nano Banana', 1, '快速生成，适合快速原型和创意探索', 'replicate', 'https://replicate.com/nanobanana/latest', 'nanobanana/latest', 1, 'nano-banana', 2, 'nanobanana/latest', '1.0', NULL, NOW());
 
 -- 效果执行结果表：存储用户使用AI效果后的生成结果和相关信息
 CREATE TABLE effect_result (
@@ -118,3 +121,16 @@ CREATE TABLE user_subscriptions (
   created_at timestamp with time zone NULL, -- 创建时间
   updated_at timestamp with time zone NULL  -- 最后更新时间
 );
+
+-- 邮箱订阅表：存储订阅 RiverFlow 更新通知的用户邮箱
+CREATE TABLE email_subscribers (
+  id SERIAL PRIMARY KEY,                    -- 订阅记录唯一标识符（自增主键）
+  email VARCHAR(255) UNIQUE NOT NULL,       -- 订阅邮箱（唯一）
+  subscribed BOOLEAN DEFAULT TRUE,          -- 是否处于订阅状态
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), -- 订阅时间
+  unsubscribed_at TIMESTAMP WITH TIME ZONE NULL      -- 取消订阅时间
+);
+
+-- 为邮箱字段创建索引，加速查询
+CREATE INDEX idx_email_subscribers_email ON email_subscribers(email);
+CREATE INDEX idx_email_subscribers_subscribed ON email_subscribers(subscribed);

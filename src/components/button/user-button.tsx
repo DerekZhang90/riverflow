@@ -27,7 +27,12 @@ export default function UserButton() {
   }, [session, setUser, user]);
 
   return (
-    <Dropdown placement="bottom-end">
+    <Dropdown
+      placement="bottom-end"
+      classNames={{
+        content: "bg-[#1a1a1a] border border-white/10 min-w-[240px]"
+      }}
+    >
       <DropdownTrigger>
         <Avatar
           isBordered
@@ -39,11 +44,18 @@ export default function UserButton() {
           src={user.avatar_url}
         />
       </DropdownTrigger>
-      <DropdownMenu aria-label="User menu actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
+      <DropdownMenu
+        aria-label="User menu actions"
+        variant="flat"
+      >
+        <DropdownItem key="profile" className="h-14 gap-2 hover:bg-white/5">
           <User
             name={user.nickname || user.email}
             description={user.email}
+            classNames={{
+              name: "text-white",
+              description: "text-gray-400"
+            }}
             avatarProps={{
               src: user.avatar_url,
             }}
@@ -84,10 +96,11 @@ export default function UserButton() {
         >
           Help & Feedback
         </DropdownItem> */}
-              <DropdownItem
+        <DropdownItem
           key="analytics"
           onClick={() => router.push('/dashboard')}
           startContent={<Icon icon="lucide:settings-2" width="16" height="16" />}
+          className="text-white hover:bg-white/5"
         >
           {t("dashboard")}
         </DropdownItem>
@@ -96,6 +109,7 @@ export default function UserButton() {
           color="danger"
           onClick={() => signOut()}
           startContent={<Icon icon="lucide:log-out" width="16" height="16" />}
+          className="hover:bg-red-500/10"
         >
           {t("logOut")}
         </DropdownItem>

@@ -78,6 +78,41 @@ export async function uploadImageToR2(
   return `${process.env.R2_ENDPOINT}/${fullObjectKey}`;
 }
 
+/**
+ * Upload multiple images to R2 storage
+ * @param imageUrls Array of image URLs to upload
+ * @param baseObjectKey Base key for object naming (task ID)
+ * @returns Array of R2 URLs
+ */
+export async function uploadMultipleImagesToR2(
+  imageUrls: string[],
+  baseObjectKey: string
+): Promise<string[]> {
+  const uploadPromises = imageUrls.map(async (url, index) => {
+    const objectKey = `ssat/images/${baseObjectKey}-${index + 1}.jpg`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch image ${index + 1} from URL: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const imageBuffer = await response.arrayBuffer();
+    const command = new PutObjectCommand({
+      Bucket: process.env.R2_BUCKET_NAME,
+      Key: objectKey,
+      Body: Buffer.from(imageBuffer),
+      ContentType: response.headers.get("content-type") || "image/jpeg",
+    });
+
+    await s3Client.send(command);
+    return `${process.env.R2_ENDPOINT}/${objectKey}`;
+  });
+
+  return Promise.all(uploadPromises);
+}
+
 export async function uploadVideoToR2(
   videoUrl: string,
   objectKey: string

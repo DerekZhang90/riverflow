@@ -20,6 +20,24 @@ const nextConfig = {
             protocol: "https",
             hostname: "replicate.delivery",
           },
+          {
+            protocol: "https",
+            hostname: "fal.media",
+          },
+          {
+            protocol: "https",
+            hostname: "v3b.fal.media",
+          },
+          {
+            protocol: "https",
+            hostname: "**.r2.dev",
+            pathname: "/**",
+          },
+          {
+            protocol: "https",
+            hostname: "**.r2.cloudflarestorage.com",
+            pathname: "/**",
+          },
         ],
       },
       video: {

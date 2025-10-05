@@ -9,7 +9,7 @@ import {
 } from "../models/effect_result";
 import { toEffectResultInfos } from "../type/domain/effect_result_info";
 import { update } from "../models/effect_result";
-import { uploadImageToR2, uploadVideoToR2 } from "../lib/r2";
+import { uploadImageToR2, uploadVideoToR2, uploadMultipleImagesToR2 } from "../lib/r2";
 
 export async function createEffectResult(effectResult: EffectResult) {
   const result = await create(effectResult);
@@ -21,31 +21,46 @@ export async function updateEffectResult(
   status: string,
   runningTime: number,
   updatedAt: Date,
-  r2Url: string
+  r2Url: string | string[]
 ) {
   console.log(
-    `updateEffectResult called with originalId: ${originalId}, status: ${status}, r2Url: ${r2Url}`
+    `updateEffectResult called with originalId: ${originalId}, status: ${status}, r2Url:`,
+    r2Url
   );
 
-  if (r2Url !== "" && r2Url !== null && r2Url !== undefined) {
+  let finalUrl: string = "";
+
+  if (r2Url && r2Url !== "" && r2Url !== null && r2Url !== undefined) {
     try {
-      if (r2Url.endsWith(".mp4") || r2Url.includes("video")) {
-        console.log(`Uploading video to R2: ${r2Url}`);
-        r2Url = await uploadVideoToR2(r2Url, originalId);
-        console.log(`Video uploaded successfully, new URL: ${r2Url}`);
-      } else {
-        console.log(`Uploading image to R2: ${r2Url}`);
-        r2Url = await uploadImageToR2(r2Url, originalId);
-        console.log(`Image uploaded successfully, new URL: ${r2Url}`);
+      // Handle array of URLs (multiple images)
+      if (Array.isArray(r2Url)) {
+        console.log(`Uploading ${r2Url.length} images to R2`);
+        const uploadedUrls = await uploadMultipleImagesToR2(r2Url, originalId);
+        console.log(`Successfully uploaded ${uploadedUrls.length} images to R2`);
+        // Store as JSON array string in database
+        finalUrl = JSON.stringify(uploadedUrls);
+      }
+      // Handle single URL
+      else if (typeof r2Url === "string") {
+        if (r2Url.endsWith(".mp4") || r2Url.includes("video")) {
+          console.log(`Uploading video to R2: ${r2Url}`);
+          finalUrl = await uploadVideoToR2(r2Url, originalId);
+          console.log(`Video uploaded successfully, new URL: ${finalUrl}`);
+        } else {
+          console.log(`Uploading image to R2: ${r2Url}`);
+          finalUrl = await uploadImageToR2(r2Url, originalId);
+          console.log(`Image uploaded successfully, new URL: ${finalUrl}`);
+        }
       }
     } catch (error) {
       console.error(`Failed to upload to R2:`, error);
-      // Don't throw the error, just log it and continue with the original URL
+      // If upload fails, use original URL
+      finalUrl = Array.isArray(r2Url) ? JSON.stringify(r2Url) : r2Url;
     }
   }
 
-  await update(originalId, status, runningTime, updatedAt, r2Url);
-  console.log(`Effect result updated in database with URL: ${r2Url}`);
+  await update(originalId, status, runningTime, updatedAt, finalUrl);
+  console.log(`Effect result updated in database with URL: ${finalUrl}`);
 }
 
 export async function updateEffectResultError(
