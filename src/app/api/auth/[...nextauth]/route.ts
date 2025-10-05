@@ -59,8 +59,8 @@ const authOptions: AuthOptions = {
             user_subscriptions_id: -1,
             is_subscription_active: false,
             used_count: 0,
-            // 赠送的积分数
-            period_remain_count: 20,
+            // 新用户赠送 5 积分
+            period_remain_count: 5,
             period_start: new Date(),
             period_end: new Date(
               new Date().setMonth(new Date().getMonth() + 1)

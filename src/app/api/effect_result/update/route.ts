@@ -1,5 +1,7 @@
 import { updateEffectResult } from "@/backend/service/effect_result";
 import { uploadImageToR2 } from "@/backend/lib/r2";
+import { getEffectResultByOriginalId } from "@/backend/service/effect_result";
+import { reducePeriodRemainCountByUserId } from "@/backend/service/credit_usage";
 
 export async function POST(request: Request) {
   try {
@@ -22,6 +24,15 @@ export async function POST(request: Request) {
       updated_at,
       original_image_url || ""
     );
+
+    // 如果生成成功，扣除积分
+    if (status === "succeeded") {
+      const effectResult = await getEffectResultByOriginalId(original_id);
+      if (effectResult && effectResult.credit && effectResult.credit > 0) {
+        await reducePeriodRemainCountByUserId(effectResult.user_id, effectResult.credit);
+        console.log(`✅ Deducted ${effectResult.credit} credits from user ${effectResult.user_id}`);
+      }
+    }
 
     return Response.json({ message: "Effect result updated successfully" }, { status: 200 });
   } catch (error) {

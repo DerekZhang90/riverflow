@@ -40,22 +40,18 @@ export default function Pricing() {
   };
 
   const handleCheckout = async (
-    plan_id: number,
-    amount: number,
-    interval: string
+    product_id: string
   ) => {
     try {
       setLoading(true);
 
       const params = {
-        plan_id: plan_id,
-        amount: amount,
-        interval: interval,
-        user_uuid: user?.uuid,
+        product_id: product_id,
+        user_id: user?.uuid,
         user_email: user?.email,
       };
 
-      const response = await fetch("/api/checkout", {
+      const response = await fetch("/api/creem/create-checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,12 +72,12 @@ export default function Pricing() {
         return;
       }
 
-      if (!data || !data.session?.url) {
+      if (!data || !data.checkout_url) {
         toast.error("Invalid response from server");
         return;
       }
 
-      router.push(data.session.url);
+      window.location.href = data.checkout_url;
     } catch (e) {
       console.error("Checkout failed:", e);
       toast.error("Checkout failed. Please try again later.");
@@ -229,10 +225,9 @@ export default function Pricing() {
                   isDisabled={tier.buttonText === "Coming Soon"}
                   onPress={() =>
                     tier.buttonText !== "Coming Soon" &&
+                    tier.creem_product_id?.[selectedFrequency.key] &&
                     handleCheckout(
-                      tier.id[selectedFrequency.key],
-                      tier.amount[selectedFrequency.key],
-                      tier.interval[selectedFrequency.key]
+                      tier.creem_product_id[selectedFrequency.key]
                     )
                   }
                 >
