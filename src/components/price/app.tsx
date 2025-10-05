@@ -223,13 +223,21 @@ export default function Pricing() {
                   href={tier.href}
                   variant={tier.buttonVariant}
                   isDisabled={tier.buttonText === "Coming Soon"}
-                  onPress={() =>
-                    tier.buttonText !== "Coming Soon" &&
-                    tier.creem_product_id?.[selectedFrequency.key] &&
-                    handleCheckout(
-                      tier.creem_product_id[selectedFrequency.key]
-                    )
-                  }
+                  onPress={() => {
+                    if (tier.buttonText === "Coming Soon") {
+                      return;
+                    }
+
+                    const productId =
+                      tier.creem_product_id?.[selectedFrequency.key];
+
+                    if (!productId) {
+                      toast.error("Checkout unavailable for this plan yet.");
+                      return;
+                    }
+
+                    handleCheckout(productId);
+                  }}
                 >
                   {tier.buttonText}
                 </Button>

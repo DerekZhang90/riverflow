@@ -26,8 +26,9 @@ export type Tier = {
     [FrequencyEnum.OneTime]: number;
   };
   creem_product_id?: {
-    [FrequencyEnum.Yearly]: string;
-    [FrequencyEnum.Monthly]: string;
+    [FrequencyEnum.Yearly]?: string;
+    [FrequencyEnum.Monthly]?: string;
+    [FrequencyEnum.OneTime]?: string;
   };
   amount: {
     [FrequencyEnum.Yearly]: number;
