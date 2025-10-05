@@ -104,7 +104,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
               href={`/${locale}`}
               size="md"
             >
-              首页
+              {t("home")}
             </Link>
           </NavbarItem>
           <NavbarItem onClick={() => handleTagClick("riverflow")}>
@@ -128,7 +128,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
               href={`/${locale}/text-to-image`}
               size="md"
             >
-              图片生成
+              {t("text-to-image")}
             </Link>
           </NavbarItem>
           <NavbarItem onClick={() => handleTagClick("pricing")}>
@@ -140,7 +140,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
               href={`/${locale}/pricing`}
               size="md"
             >
-              定价
+              {t("pricing")}
             </Link>
           </NavbarItem>
         </NavbarContent>
@@ -154,7 +154,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
             <div className="flex flex-row gap-2">
               <button className="flex justify-center items-center gap-3 mr-6 hover:scale-110 transition-all duration-300">
                 <a href={`/${locale}/dashboard`} className="text-white hover:text-blue-400">
-                  我的作品
+                  {t("dashboard")}
                 </a>
               </button>
               <UserButton />

@@ -12,17 +12,34 @@ import { UserSubscriptionInfo } from "@/backend/type/domain/user_subscription_in
 import CreditInfo from "@/components/landingpage/credit-info";
 import { useTranslations } from "next-intl";
 import { Icon } from "@iconify/react";
+import { useLocale } from "next-intl";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+type AIModel = {
+  id: string;
+  name: string;
+  api_endpoint?: string;
+  link_name?: string;
+  description: {
+    en: string;
+    zh: string;
+  };
+  supports_image_to_image: boolean;
+  disabled?: boolean;
+};
+
 // AI 模型配置
-const AI_MODELS = [
+const AI_MODELS: AIModel[] = [
   {
     id: "seedream-text",
     name: "Seedream V4",
     api_endpoint: "seedream-text-to-image",
     link_name: "seedream-text-to-image",
-    description: "高质量图片生成，支持多种尺寸和分辨率",
+    description: {
+      zh: "高质量图片生成，支持多种尺寸和分辨率",
+      en: "High-fidelity generation with flexible resolutions and ratios.",
+    },
     supports_image_to_image: true,
   },
   {
@@ -30,8 +47,21 @@ const AI_MODELS = [
     name: "Nano Banana",
     api_endpoint: "nanobanana-text-to-image",
     link_name: "nanobanana-text-to-image",
-    description: "快速生成，适合快速原型和创意探索",
+    description: {
+      zh: "快速生成，适合快速原型和创意探索",
+      en: "Lightning-fast renders ideal for rapid exploration and ideation.",
+    },
     supports_image_to_image: true,
+  },
+  {
+    id: "riverflow",
+    name: "RiverFlow",
+    description: {
+      zh: "旗舰模型即将上线，提供更高画质与控制力",
+      en: "Our flagship model is coming soon with higher fidelity and control.",
+    },
+    supports_image_to_image: false,
+    disabled: true,
   },
 ];
 
@@ -48,7 +78,8 @@ export default function Worker(props: {
   const [generating, setGenerating] = useState<boolean>(false);
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0]);
+  const defaultModel = AI_MODELS.find((model) => !model.disabled) || AI_MODELS[0];
+  const [selectedModel, setSelectedModel] = useState(defaultModel);
   const [generationMode, setGenerationMode] = useState<"text" | "image">("text");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
@@ -71,6 +102,8 @@ export default function Worker(props: {
   const { user } = useAppContext();
   const router = useRouter();
   const t = useTranslations(props.lang || "index");
+  const locale = useLocale();
+  const localeKey = locale === "zh" ? "zh" : "en";
 
   useEffect(() => {
     if (user?.uuid) {
@@ -137,6 +170,15 @@ export default function Worker(props: {
 
     if (generationMode === "image" && !uploadedImage) {
       toast.warning("请上传参考图片");
+      return;
+    }
+
+    if (!selectedModel.api_endpoint || !selectedModel.link_name) {
+      toast.info(
+        localeKey === "en"
+          ? "This model will be available soon. Please choose another model."
+          : "该模型即将上线，请选择其他模型。"
+      );
       return;
     }
     // step1: create prediction
@@ -333,24 +375,42 @@ export default function Worker(props: {
         {/* 模型选择区域 */}
         <div className="mb-8 pt-8">
           <h2 className="text-2xl font-bold text-white mb-4">选择 AI 模型</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {AI_MODELS.map((model) => (
               <div
                 key={model.id}
-                onClick={() => setSelectedModel(model)}
-                className={`p-6 rounded-xl cursor-pointer transition-all duration-300 ${
-                  selectedModel.id === model.id
-                    ? "bg-blue-600/20 border-2 border-blue-500"
-                    : "bg-[#1a1a1a] border-2 border-[#2a2a2a] hover:border-blue-600/50"
+                onClick={() => {
+                  if (model.disabled) {
+                    toast.info(
+                      localeKey === "en"
+                        ? "RiverFlow model is coming soon"
+                        : "RiverFlow 模型即将上线"
+                    );
+                    return;
+                  }
+                  setSelectedModel(model);
+                }}
+                className={`rounded-xl p-6 transition-all duration-300 ${
+                  model.disabled
+                    ? "cursor-not-allowed border-2 border-dashed border-[#2a2a2a] bg-[#141414] opacity-70"
+                    : selectedModel.id === model.id
+                    ? "cursor-pointer border-2 border-blue-500 bg-blue-600/20"
+                    : "cursor-pointer border-2 border-[#2a2a2a] bg-[#1a1a1a] hover:border-blue-600/50"
                 }`}
               >
-                <div className="flex items-start justify-between mb-3">
+                <div className="mb-3 flex items-start justify-between">
                   <h3 className="text-xl font-bold text-white">{model.name}</h3>
-                  <span className="px-3 py-1 bg-blue-600/20 text-blue-400 text-sm rounded-full">
-                    1 积分/图
-                  </span>
+                  {model.disabled ? (
+                    <span className="rounded-full bg-yellow-500/10 px-3 py-1 text-sm text-yellow-300">
+                      {locale === "en" ? "Coming soon" : "即将推出"}
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-blue-600/20 px-3 py-1 text-sm text-blue-400">
+                      {localeKey === "en" ? "1 credit / image" : "1 积分/图"}
+                    </span>
+                  )}
                 </div>
-                <p className="text-gray-400 text-sm">{model.description}</p>
+                <p className="text-sm text-gray-400">{model.description[localeKey]}</p>
               </div>
             ))}
           </div>

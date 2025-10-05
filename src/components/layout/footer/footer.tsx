@@ -1,13 +1,19 @@
 import React from "react";
 import { Divider, Link } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { getDomain } from "@/config/domain";
 
 export default function Footer({ locale }: { locale: string }) {
   const t = useTranslations("Footer");
+  const currentLocale = useLocale();
 
   const domain = getDomain();
+
+  const description =
+    currentLocale === "en"
+      ? "RiverFlow.art is a leading AI image platform, delivering advanced tools to craft breathtaking visuals."
+      : "RiverFlow.art 是一个领先的 AI 图片生成平台，使用先进的人工智能技术创作精美图片。";
 
   const footerNavigation = {
     supportOptions: [
@@ -16,7 +22,16 @@ export default function Footer({ locale }: { locale: string }) {
         href: `${domain}/${locale}`,
       },
     ],
-    multiLanguage: [{ name: "English", href: domain }],
+    multiLanguage:
+      currentLocale === "en"
+        ? [
+            { name: "English", href: `${domain}/en` },
+            { name: "中文", href: `${domain}/zh` },
+          ]
+        : [
+            { name: "中文", href: `${domain}/zh` },
+            { name: "English", href: `${domain}/en` },
+          ],
 
     legal: [
       { name: t("legal.item.item1"), href: "/legal/privacy-policy" },
@@ -62,7 +77,7 @@ export default function Footer({ locale }: { locale: string }) {
               </span>
             </div>
             <p className="text-sm text-gray-400 text-center xl:text-left leading-relaxed">
-              RiverFlow.art 是一个领先的 AI 图片生成平台，使用先进的人工智能技术创作精美图片。
+              {description}
             </p>
             {/* 社交媒体图标 */}
             <div className="flex gap-4 justify-center xl:justify-start">

@@ -1,57 +1,64 @@
-import { useRouter } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
-import { usePathname } from 'next/navigation';
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-import type { Selection } from "@nextui-org/react";
-import React from "react";
+import { useRouter } from "@/i18n/routing";
+import { useLocale } from "next-intl";
+import { usePathname } from "next/navigation";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  type Selection,
+} from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { localesName } from "@/i18n/routing";
 
 export default function Locales() { 
-    const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["text"]));
-    const router = useRouter();
-    const pathname = usePathname();
-    const locale = useLocale();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(
+    () => new Set([locale])
+  );
 
-    const changeLanguage = (selectedLocale: string) => {
-        if (selectedLocale !== locale) {
-          // Remove the locale from the pathname if it exists
-          let newPathName = pathname.replace(`/${locale}`, '');
-          
-          // Ensure the pathname starts with a slash
-          if (!newPathName.startsWith('/')) {
-            newPathName = '/' + newPathName;
-          }
-          
-          // Use the router's push method with the locale option
-          router.push(newPathName, { locale: selectedLocale as any });
-        }
-      };
+  useEffect(() => {
+    setSelectedKeys(new Set([locale]));
+  }, [locale]);
 
-      return (
-        <Dropdown>
-          <DropdownTrigger>
-            <Button 
-              variant="light"
-              className="capitalize"
-              startContent={<span role="img" aria-label="globe" className="">🌏</span>}
-              style={{ color: '#000000' }}
-             >
-              {locale.toUpperCase()}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu 
-            variant="faded"
-            disallowEmptySelection
-            selectionMode="single"
-            selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}
+  const changeLanguage = (selectedLocale: string) => {
+    if (selectedLocale === locale) return;
+
+    router.push(pathname || "/", { locale: selectedLocale as any });
+  };
+
+  return (
+    <Dropdown placement="bottom-end">
+      <DropdownTrigger>
+        <Button
+          variant="bordered"
+          className="capitalize border-white/20 bg-white/5 text-white backdrop-blur-md"
+          startContent={<span role="img" aria-label="globe">🌏</span>}
+        >
+          {locale.toUpperCase()}
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+        className="bg-[#111827] text-white border border-white/10"
+      >
+        {Object.keys(localesName).map((item) => (
+          <DropdownItem
+            key={item}
+            onClick={() => changeLanguage(item)}
+            className="text-sm text-slate-100 hover:bg-white/10"
           >
-            {Object.keys(localesName).map((item) => (
-              <DropdownItem key={item} onClick={() => changeLanguage(item)} style={{ color: '#000000' }}>
-                {localesName[item as keyof typeof localesName]}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>   
-        </Dropdown>
-      );
+            {localesName[item as keyof typeof localesName]}
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
+  );
 }
