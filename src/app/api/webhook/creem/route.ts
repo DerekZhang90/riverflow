@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { pool } from "@/backend/config/db";
+import { getDb } from "@/backend/config/db";
 
 // 验证 Creem webhook 签名
 function verifySignature(payload: string, signature: string): boolean {
@@ -98,6 +98,7 @@ async function handleSubscriptionPaid(event: any) {
 
   console.log(`💰 Processing subscription payment for user ${userId}`);
 
+  const pool = getDb();
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
@@ -192,6 +193,7 @@ async function handleSubscriptionCanceled(event: any) {
 
   console.log(`❌ Canceling subscription for user ${userId}`);
 
+  const pool = getDb();
   await pool.query(
     `UPDATE user_subscriptions
      SET status = 'canceled',
@@ -216,6 +218,7 @@ async function handleSubscriptionExpired(event: any) {
 
   console.log(`⏱️  Subscription expired for user ${userId}`);
 
+  const pool = getDb();
   const client = await pool.connect();
   try {
     await client.query("BEGIN");
