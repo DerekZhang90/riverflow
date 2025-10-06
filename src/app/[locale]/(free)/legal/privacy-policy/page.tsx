@@ -42,7 +42,7 @@ const PRIVACY_CONTENT: Record<"en" | "zh", PrivacyContent> = {
           {
             title: "Billing",
             description:
-              "Stripe processes subscription payments on our behalf. We never see or store full card numbers.",
+              "Creem.io processes subscription payments on our behalf. We never see or store full card numbers.",
           },
           {
             title: "Generated content",
@@ -75,8 +75,8 @@ const PRIVACY_CONTENT: Record<"en" | "zh", PrivacyContent> = {
         ],
         items: [
           {
-            title: "Stripe",
-            description: "manages payments and subscriptions.",
+            title: "Creem.io",
+            description: "manages subscription billing and secure checkout.",
           },
           {
             title: "Google OAuth",
@@ -146,7 +146,7 @@ const PRIVACY_CONTENT: Record<"en" | "zh", PrivacyContent> = {
           {
             title: "账单信息",
             description:
-              "订阅和付款由 Stripe 代为处理，我们不会接触或保存您的完整银行卡信息。",
+              "订阅和付款由 Creem.io 代为处理，我们不会接触或保存您的完整银行卡信息。",
           },
           {
             title: "生成内容",
@@ -178,7 +178,7 @@ const PRIVACY_CONTENT: Record<"en" | "zh", PrivacyContent> = {
           "我们会与经过审核的合作伙伴协作，所有伙伴均签订数据处理协议：",
         ],
         items: [
-          { title: "Stripe", description: "负责订阅支付。" },
+          { title: "Creem.io", description: "负责订阅支付与结算。" },
           { title: "Google OAuth", description: "提供安全的身份验证。" },
           { title: "Replicate 等模型供应商", description: "根据您的提示词生成内容。" },
           { title: "Cloudflare R2 / AWS", description: "存储生成结果与临时素材。" },

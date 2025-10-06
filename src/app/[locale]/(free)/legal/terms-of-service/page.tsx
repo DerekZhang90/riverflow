@@ -45,7 +45,7 @@ const TERMS_CONTENT: Record<"en" | "zh", TermsContent> = {
           {
             title: "Billing",
             description:
-              "Stripe processes all payments securely. Subscription renewals are charged automatically until you cancel. Cancelled plans remain active until the end of the current billing period.",
+              "Creem.io processes all payments securely. Subscription renewals are charged automatically until you cancel. Cancelled plans remain active until the end of the current billing period.",
           },
           {
             title: "Refunds",
@@ -75,7 +75,7 @@ const TERMS_CONTENT: Record<"en" | "zh", TermsContent> = {
       {
         heading: "Third-party services",
         body: [
-          "Generation relies on external providers such as Replicate, Stripe, Google OAuth, and Cloudflare R2. Their respective terms control your relationship with them. We are not responsible for outages or data loss caused by those providers.",
+          "Generation relies on external providers such as Replicate, Creem.io, Google OAuth, and Cloudflare R2. Their respective terms control your relationship with them. We are not responsible for outages or data loss caused by those providers.",
         ],
       },
       {
@@ -129,7 +129,7 @@ const TERMS_CONTENT: Record<"en" | "zh", TermsContent> = {
           {
             title: "付款",
             description:
-              "所有付款均由 Stripe 安全处理。订阅会自动续费，直到您取消为止。取消后服务会持续至当前计费周期结束。",
+              "所有付款均由 Creem.io 安全处理。订阅会自动续费，直到您取消为止。取消后服务会持续至当前计费周期结束。",
           },
           {
             title: "退款政策",
@@ -159,7 +159,7 @@ const TERMS_CONTENT: Record<"en" | "zh", TermsContent> = {
       {
         heading: "第三方服务",
         body: [
-          "本服务依赖 Replicate、Stripe、Google OAuth、Cloudflare R2 等第三方提供支撑。这些服务可能适用各自的条款，我们不对其故障或造成的数据丢失负责。",
+          "本服务依赖 Replicate、Creem.io、Google OAuth、Cloudflare R2 等第三方提供支撑。这些服务可能适用各自的条款，我们不对其故障或造成的数据丢失负责。",
         ],
       },
       {

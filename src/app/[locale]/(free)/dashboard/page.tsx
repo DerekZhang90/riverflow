@@ -238,65 +238,61 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="">
-      <div className="container max-w-7xl mx-auto px-4 md:p-8 py-10 md:py-12 md:pb-24">
-        <div className="mb-8 text-center animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-600 mb-2">
+    <div className="min-h-screen w-full bg-[#05070f] px-4 py-16 text-slate-200">
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-10">
+        <div className="pointer-events-none absolute inset-0 blur-3xl">
+          <div className="absolute -top-32 left-[-15%] h-72 w-72 rounded-full bg-blue-500/15" />
+          <div className="absolute bottom-[-25%] right-[-10%] h-80 w-80 rounded-full bg-indigo-500/15" />
+        </div>
+
+        <div className="relative z-10 space-y-6 text-center">
+          <p className="text-xs uppercase tracking-[0.35em] text-blue-300/70">
+            {locale === "zh" ? "RiverFlow 创作空间" : "RiverFlow Creator Hub"}
+          </p>
+          <h1 className="text-3xl font-semibold text-white md:text-4xl">
             {t("title")}
           </h1>
         </div>
 
         {userSubscriptionInfo && (
-          <div className="mb-8 p-6 bg-blue-50 dark:bg-gray-800 rounded-2xl border border-blue-100 dark:border-gray-700 animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300">
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    {t("subscription.remainingCredits")}
-                  </span>
-                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {userSubscriptionInfo.remain_count}
-                  </span>
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300">
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    {t("subscription.planName")}
-                  </span>
-                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                    {userSubscriptionInfo.plan_name}
-                  </span>
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300">
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    {t("subscription.periodStart")}
-                  </span>
-                  <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {new Date(
-                      userSubscriptionInfo.current_period_start
-                    ).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300">
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                    {t("subscription.periodEnd")}
-                  </span>
-                  <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                    {userSubscriptionInfo.current_period_end
-                      ? new Date(
-                          userSubscriptionInfo.current_period_end
-                        ).toLocaleDateString()
-                      : "N/A"}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <section className="relative z-10 grid gap-4 rounded-3xl border border-white/10 bg-[#0b1221]/70 p-6 backdrop-blur-xl md:grid-cols-4">
+            {[
+              {
+                label: t("subscription.remainingCredits"),
+                value: `${userSubscriptionInfo.remain_count ?? 0}`,
+              },
+              {
+                label: t("subscription.planName"),
+                value: userSubscriptionInfo.plan_name || "-",
+              },
+              {
+                label: t("subscription.periodStart"),
+                value: new Date(
+                  userSubscriptionInfo.current_period_start
+                ).toLocaleDateString(),
+              },
+              {
+                label: t("subscription.periodEnd"),
+                value: userSubscriptionInfo.current_period_end
+                  ? new Date(
+                      userSubscriptionInfo.current_period_end
+                    ).toLocaleDateString()
+                  : locale === "zh" ? "暂无" : "N/A",
+              },
+            ].map(({ label, value }) => (
+              <article
+                key={label}
+                className="rounded-2xl border border-white/10 bg-[#101a2e]/80 p-4 text-left shadow-[0_0_25px_rgba(15,23,42,0.35)]"
+              >
+                <p className="text-xs uppercase tracking-wide text-slate-400">
+                  {label}
+                </p>
+                <p className="mt-3 text-2xl font-semibold text-white">
+                  {value}
+                </p>
+              </article>
+            ))}
+          </section>
         )}
         {isLoading ? (
           <div className="flex justify-center items-center h-64 rounded-2xl">
@@ -304,14 +300,14 @@ export default function Dashboard() {
           </div>
         ) : effectResults && effectResults.length > 0 ? (
           <>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-blue-100 dark:border-gray-700 p-6 animate-fade-in overflow-x-auto">
+            <div className="relative z-10 overflow-hidden rounded-3xl border border-white/10 bg-[#0b1221]/70 p-6 shadow-[0_0_35px_rgba(15,23,42,0.45)]">
               <Table
                 className="min-w-full"
                 aria-label="Results table"
                 classNames={{
                   wrapper: "bg-transparent",
-                  th: "bg-blue-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200",
-                  td: "text-gray-700 dark:text-gray-300",
+                  th: "bg-transparent text-xs uppercase tracking-wide text-slate-300",
+                  td: "text-slate-200",
                 }}
               >
                 <TableHeader>
@@ -341,7 +337,7 @@ export default function Dashboard() {
                   {effectResults.map((result, index) => (
                     <TableRow
                       key={result.result_id}
-                      className="hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                      className="hover:bg-white/5 transition-colors duration-200"
                     >
                       <TableCell className="text-center text-xs md:text-base font-medium">
                         {(page - 1) * pageSize + index + 1}
@@ -357,11 +353,11 @@ export default function Dashboard() {
                       <TableCell className="text-center">
                         <div className="flex justify-center">
                           {result.status === "succeeded" ? (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-200">
                               ✓ {result.status}
                             </span>
                           ) : (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-slate-200">
                               ✗ {result.status}
                             </span>
                           )}
@@ -376,7 +372,7 @@ export default function Dashboard() {
                       <TableCell className="text-center">
                         <Button
                           isIconOnly
-                          className="bg-blue-100 text-blue-600 hover:bg-blue-200 dark:bg-gray-700 dark:text-blue-400 dark:hover:bg-gray-600 transition-colors"
+                          className="bg-white/10 text-blue-300 hover:bg-white/20 transition-colors"
                           variant="flat"
                           onPress={() => handleViewResult(result)}
                           isDisabled={
@@ -409,12 +405,12 @@ export default function Dashboard() {
             )}
           </>
         ) : (
-          <div className="flex flex-col justify-center items-center h-64 bg-blue-50 dark:bg-gray-800 rounded-2xl border border-blue-100 dark:border-gray-700">
+          <div className="relative z-10 flex h-64 flex-col items-center justify-center rounded-3xl border border-white/10 bg-[#0b1221]/40">
             <div className="text-6xl mb-4">📊</div>
-            <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-base md:text-lg text-slate-200">
               {t("noResults")}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-sm text-slate-400 mt-2">
               {locale === "zh"
                 ? "开始创建精彩的 AI 内容吧！"
                 : "Start a new AI generation to fill this space."}
