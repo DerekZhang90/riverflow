@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { RiverFlowHero } from '@/components/riverflow/hero';
 import { RiverFlowFeatures } from '@/components/riverflow/features';
 import { RiverFlowComingSoon } from '@/components/riverflow/coming-soon';
-import { RiverFlowGallery } from '@/components/riverflow/gallery';
 
 export const metadata: Metadata = {
   title: 'RiverFlow - 下一代 AI 图片生成模型 | RiverFlow.art',
@@ -26,17 +25,9 @@ export const metadata: Metadata = {
 export default function RiverFlowPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
-      {/* Hero Section */}
       <RiverFlowHero />
-
-      {/* Features Section */}
       <RiverFlowFeatures />
-
-      {/* Coming Soon Section */}
       <RiverFlowComingSoon />
-
-      {/* Gallery Preview */}
-      <RiverFlowGallery />
     </div>
   );
 }

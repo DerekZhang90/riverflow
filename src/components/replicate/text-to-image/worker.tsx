@@ -105,6 +105,123 @@ export default function Worker(props: {
   const locale = useLocale();
   const localeKey = locale === "zh" ? "zh" : "en";
 
+  const ui = {
+    en: {
+      chooseModel: "Select an AI model",
+      toastInsufficientCredits: (required: number, remain?: number) =>
+        `Not enough credits. ${required} required, ${remain ?? 0} remaining.`,
+      toastPromptRequired: "Please enter a prompt.",
+      toastImageRequired: "Please upload a reference image.",
+      toastComingSoon: "RiverFlow model is coming soon",
+      comingSoonLabel: "Coming soon",
+      creditsPill: "1 credit / image",
+      generationMode: "Generation mode",
+      textMode: "Text to image",
+      imageMode: "Image to image",
+      uploadLabel: "Upload reference image",
+      uploadPlaceholder: "Tap to upload an image",
+      resolutionLabel: "Resolution",
+      resolutionPlaceholder: "Select resolution",
+      aspectLabel: "Aspect ratio",
+      aspectPlaceholder: "Select aspect ratio",
+      aspectAutoHint: "Aspect ratio matches the uploaded image automatically",
+      sequentialLabel: "Batch mode",
+      sequentialPlaceholder: "Select mode",
+      sequentialDisabled: "Off",
+      sequentialAuto: "Auto (AI will decide to create related images)",
+      maxImagesLabel: "Maximum images (1-15)",
+      maxImagesHint: "Limit for auto mode when generating related shots",
+      nanoCountLabel: "Images (1-4)",
+      outputFormatLabel: "Output format",
+      outputFormatPlaceholder: "Select format",
+      nanoAspectLabel: "Aspect ratio",
+      processing: "Processing...",
+      generating: "Generating...",
+      generateButton: (credits: number) => `Generate images (${credits} credits)`,
+    },
+    zh: {
+      chooseModel: "选择 AI 模型",
+      toastInsufficientCredits: (required: number, remain?: number) =>
+        `积分不足，需要 ${required} 积分，当前剩余 ${remain ?? 0} 积分`,
+      toastPromptRequired: "请输入提示词",
+      toastImageRequired: "请上传参考图片",
+      toastComingSoon: "RiverFlow 模型即将上线",
+      comingSoonLabel: "即将推出",
+      creditsPill: "1 积分/图",
+      generationMode: "生成模式",
+      textMode: "文生图",
+      imageMode: "图生图",
+      uploadLabel: "上传参考图片",
+      uploadPlaceholder: "点击上传图片",
+      resolutionLabel: "分辨率",
+      resolutionPlaceholder: "选择分辨率",
+      aspectLabel: "宽高比",
+      aspectPlaceholder: "选择宽高比",
+      aspectAutoHint: "宽高比：自动匹配输入图片",
+      sequentialLabel: "组图生成模式",
+      sequentialPlaceholder: "选择模式",
+      sequentialDisabled: "关闭",
+      sequentialAuto: "自动（AI决定是否生成多张关联图片）",
+      maxImagesLabel: "最大生成数量 (1-15)",
+      maxImagesHint: "AI 自动模式下的最大图片数量",
+      nanoCountLabel: "生成数量 (1-4)",
+      outputFormatLabel: "输出格式",
+      outputFormatPlaceholder: "选择格式",
+      nanoAspectLabel: "宽高比",
+      processing: "处理中...",
+      generating: "生成中...",
+      generateButton: (credits: number) => `生成图片 (${credits} 积分)`,
+    },
+  } as const;
+
+  const seedreamAspectOptions = localeKey === "en"
+    ? [
+        { key: "1:1", label: "1:1 (Square)" },
+        { key: "4:3", label: "4:3 (Landscape)" },
+        { key: "3:2", label: "3:2 (Landscape)" },
+        { key: "16:9", label: "16:9 (Landscape)" },
+        { key: "21:9", label: "21:9 (Ultrawide)" },
+        { key: "3:4", label: "3:4 (Portrait)" },
+        { key: "2:3", label: "2:3 (Portrait)" },
+        { key: "9:16", label: "9:16 (Portrait)" },
+      ]
+    : [
+        { key: "1:1", label: "1:1 (正方形)" },
+        { key: "4:3", label: "4:3 (横版)" },
+        { key: "3:2", label: "3:2 (横版)" },
+        { key: "16:9", label: "16:9 (横版)" },
+        { key: "21:9", label: "21:9 (超宽)" },
+        { key: "3:4", label: "3:4 (竖版)" },
+        { key: "2:3", label: "2:3 (竖版)" },
+        { key: "9:16", label: "9:16 (竖版)" },
+      ];
+
+  const nanoAspectOptions = localeKey === "en"
+    ? [
+        { key: "1:1", label: "1:1 (Square)" },
+        { key: "4:3", label: "4:3" },
+        { key: "3:2", label: "3:2" },
+        { key: "2:3", label: "2:3" },
+        { key: "5:4", label: "5:4" },
+        { key: "4:5", label: "4:5" },
+        { key: "3:4", label: "3:4" },
+        { key: "16:9", label: "16:9" },
+        { key: "9:16", label: "9:16" },
+        { key: "21:9", label: "21:9" },
+      ]
+    : [
+        { key: "1:1", label: "1:1 (正方形)" },
+        { key: "4:3", label: "4:3" },
+        { key: "3:2", label: "3:2" },
+        { key: "2:3", label: "2:3" },
+        { key: "5:4", label: "5:4" },
+        { key: "4:5", label: "4:5" },
+        { key: "3:4", label: "3:4" },
+        { key: "16:9", label: "16:9" },
+        { key: "9:16", label: "9:16" },
+        { key: "21:9", label: "21:9" },
+      ];
+
   useEffect(() => {
     if (user?.uuid) {
       fetchUserSubscriptionInfo();
@@ -159,17 +276,22 @@ export default function Worker(props: {
       typeof userSubscriptionInfo?.remain_count === "number" &&
       userSubscriptionInfo.remain_count < requiredCredits
     ) {
-      toast.warning(`积分不足，需要 ${requiredCredits} 积分，当前剩余 ${userSubscriptionInfo.remain_count} 积分`);
+      toast.warning(
+        ui[localeKey].toastInsufficientCredits(
+          requiredCredits,
+          userSubscriptionInfo.remain_count
+        )
+      );
       return;
     }
 
     if (prompt.length === 0) {
-      toast.warning("请输入提示词");
+      toast.warning(ui[localeKey].toastPromptRequired);
       return;
     }
 
     if (generationMode === "image" && !uploadedImage) {
-      toast.warning("请上传参考图片");
+      toast.warning(ui[localeKey].toastImageRequired);
       return;
     }
 
@@ -374,18 +496,16 @@ export default function Worker(props: {
       <div className="w-full max-w-7xl mx-auto px-4">
         {/* 模型选择区域 */}
         <div className="mb-8 pt-8">
-          <h2 className="text-2xl font-bold text-white mb-4">选择 AI 模型</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {ui[localeKey].chooseModel}
+          </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {AI_MODELS.map((model) => (
               <div
                 key={model.id}
                 onClick={() => {
                   if (model.disabled) {
-                    toast.info(
-                      localeKey === "en"
-                        ? "RiverFlow model is coming soon"
-                        : "RiverFlow 模型即将上线"
-                    );
+                    toast.info(ui[localeKey].toastComingSoon);
                     return;
                   }
                   setSelectedModel(model);
@@ -402,11 +522,11 @@ export default function Worker(props: {
                   <h3 className="text-xl font-bold text-white">{model.name}</h3>
                   {model.disabled ? (
                     <span className="rounded-full bg-yellow-500/10 px-3 py-1 text-sm text-yellow-300">
-                      {locale === "en" ? "Coming soon" : "即将推出"}
+                      {ui[localeKey].comingSoonLabel}
                     </span>
                   ) : (
                     <span className="rounded-full bg-blue-600/20 px-3 py-1 text-sm text-blue-400">
-                      {localeKey === "en" ? "1 credit / image" : "1 积分/图"}
+                      {ui[localeKey].creditsPill}
                     </span>
                   )}
                 </div>
@@ -418,7 +538,9 @@ export default function Worker(props: {
 
         {/* 生成模式切换 */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4">生成模式</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {ui[localeKey].generationMode}
+          </h2>
           <div className="flex gap-4">
             <button
               onClick={() => setGenerationMode("text")}
@@ -429,7 +551,7 @@ export default function Worker(props: {
               }`}
             >
               <Icon icon="lucide:type" className="inline-block w-5 h-5 mr-2" />
-              文生图
+              {ui[localeKey].textMode}
             </button>
             <button
               onClick={() => setGenerationMode("image")}
@@ -440,7 +562,7 @@ export default function Worker(props: {
               }`}
             >
               <Icon icon="lucide:image" className="inline-block w-5 h-5 mr-2" />
-              图生图
+              {ui[localeKey].imageMode}
             </button>
           </div>
         </div>
@@ -451,7 +573,7 @@ export default function Worker(props: {
             {generationMode === "image" && (
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-300 mb-3">
-                  上传参考图片
+                  {ui[localeKey].uploadLabel}
                 </label>
                 <div className="relative">
                   <input
@@ -474,7 +596,7 @@ export default function Worker(props: {
                     ) : (
                       <div className="flex flex-col items-center justify-center h-full text-gray-500">
                         <Icon icon="lucide:upload" className="w-12 h-12 mb-2" />
-                        <span>点击上传图片</span>
+                        <span>{ui[localeKey].uploadPlaceholder}</span>
                       </div>
                     )}
                   </label>
@@ -514,9 +636,11 @@ export default function Worker(props: {
           {selectedModel.id === "seedream-text" && (
             <>
               <div className="mb-6">
-                <label className="block ml-1 text-sm mb-2 text-gray-300">分辨率</label>
+                <label className="block ml-1 text-sm mb-2 text-gray-300">
+                  {ui[localeKey].resolutionLabel}
+                </label>
                 <Select
-                  placeholder="选择分辨率"
+                  placeholder={ui[localeKey].resolutionPlaceholder}
                   className="max-w-xs"
                   selectedKeys={[size]}
                   onSelectionChange={(keys) => setSize(Array.from(keys)[0] as string)}
@@ -537,9 +661,11 @@ export default function Worker(props: {
               {/* 只在文生图模式显示宽高比选择 */}
               {generationMode === "text" && (
                 <div className="mb-6">
-                  <label className="block ml-1 text-sm mb-2 text-gray-300">宽高比</label>
+                  <label className="block ml-1 text-sm mb-2 text-gray-300">
+                    {ui[localeKey].aspectLabel}
+                  </label>
                   <Select
-                    placeholder="选择宽高比"
+                    placeholder={ui[localeKey].aspectPlaceholder}
                     className="max-w-xs"
                     selectedKeys={[aspectRatio]}
                     onSelectionChange={(keys) => setAspectRatio(Array.from(keys)[0] as string)}
@@ -551,14 +677,11 @@ export default function Worker(props: {
                       listbox: "bg-[#1a1a1a]",
                     }}
                   >
-                    <SelectItem key="1:1" value="1:1">1:1 (正方形)</SelectItem>
-                    <SelectItem key="4:3" value="4:3">4:3 (横版)</SelectItem>
-                    <SelectItem key="3:2" value="3:2">3:2 (横版)</SelectItem>
-                    <SelectItem key="16:9" value="16:9">16:9 (横版)</SelectItem>
-                    <SelectItem key="21:9" value="21:9">21:9 (超宽)</SelectItem>
-                    <SelectItem key="3:4" value="3:4">3:4 (竖版)</SelectItem>
-                    <SelectItem key="2:3" value="2:3">2:3 (竖版)</SelectItem>
-                    <SelectItem key="9:16" value="9:16">9:16 (竖版)</SelectItem>
+                    {seedreamAspectOptions.map((option) => (
+                      <SelectItem key={option.key} value={option.key}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </Select>
                 </div>
               )}
@@ -567,15 +690,17 @@ export default function Worker(props: {
               {generationMode === "image" && (
                 <div className="mb-6">
                   <p className="text-sm text-gray-400">
-                    宽高比：自动匹配输入图片
+                    {ui[localeKey].aspectAutoHint}
                   </p>
                 </div>
               )}
 
               <div className="mb-6">
-                <label className="block ml-1 text-sm mb-2 text-gray-300">组图生成模式</label>
+                <label className="block ml-1 text-sm mb-2 text-gray-300">
+                  {ui[localeKey].sequentialLabel}
+                </label>
                 <Select
-                  placeholder="选择模式"
+                  placeholder={ui[localeKey].sequentialPlaceholder}
                   className="max-w-xs"
                   selectedKeys={[sequentialGeneration]}
                   onSelectionChange={(keys) => setSequentialGeneration(Array.from(keys)[0] as string)}
@@ -587,8 +712,12 @@ export default function Worker(props: {
                     listbox: "bg-[#1a1a1a]",
                   }}
                 >
-                  <SelectItem key="disabled" value="disabled">关闭</SelectItem>
-                  <SelectItem key="auto" value="auto">自动（AI决定是否生成多张关联图片）</SelectItem>
+                  <SelectItem key="disabled" value="disabled">
+                    {ui[localeKey].sequentialDisabled}
+                  </SelectItem>
+                  <SelectItem key="auto" value="auto">
+                    {ui[localeKey].sequentialAuto}
+                  </SelectItem>
                 </Select>
               </div>
 
@@ -596,7 +725,7 @@ export default function Worker(props: {
               {sequentialGeneration === "auto" && (
                 <div className="mb-6">
                   <label className="block ml-1 text-sm mb-2 text-gray-300">
-                    最大生成数量 (1-15)
+                    {ui[localeKey].maxImagesLabel}
                   </label>
                   <input
                     type="number"
@@ -606,7 +735,9 @@ export default function Worker(props: {
                     onChange={(e) => setMaxImages(parseInt(e.target.value) || 1)}
                     className="w-full px-4 py-2 bg-[#0a0a0a] border border-[#2a2a2a] rounded-lg text-white"
                   />
-                  <p className="text-xs text-gray-500 mt-1">AI自动模式下的最大图片数量</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {ui[localeKey].maxImagesHint}
+                  </p>
                 </div>
               )}
             </>
@@ -616,7 +747,9 @@ export default function Worker(props: {
           {selectedModel.id === "nanobanana" && (
             <>
               <div className="mb-6">
-                <label className="block ml-1 text-sm mb-2 text-gray-300">生成数量 (1-4)</label>
+                <label className="block ml-1 text-sm mb-2 text-gray-300">
+                  {ui[localeKey].nanoCountLabel}
+                </label>
                 <input
                   type="number"
                   min="1"
@@ -628,9 +761,11 @@ export default function Worker(props: {
               </div>
 
               <div className="mb-6">
-                <label className="block ml-1 text-sm mb-2 text-gray-300">输出格式</label>
+                <label className="block ml-1 text-sm mb-2 text-gray-300">
+                  {ui[localeKey].outputFormatLabel}
+                </label>
                 <Select
-                  placeholder="选择格式"
+                  placeholder={ui[localeKey].outputFormatPlaceholder}
                   className="max-w-xs"
                   selectedKeys={[outputFormat]}
                   onSelectionChange={(keys) => setOutputFormat(Array.from(keys)[0] as string)}
@@ -648,9 +783,11 @@ export default function Worker(props: {
               </div>
 
               <div className="mb-6">
-                <label className="block ml-1 text-sm mb-2 text-gray-300">宽高比</label>
+                <label className="block ml-1 text-sm mb-2 text-gray-300">
+                  {ui[localeKey].nanoAspectLabel}
+                </label>
                 <Select
-                  placeholder="选择宽高比"
+                  placeholder={ui[localeKey].aspectPlaceholder}
                   className="max-w-xs"
                   selectedKeys={[nanoAspectRatio]}
                   onSelectionChange={(keys) => setNanoAspectRatio(Array.from(keys)[0] as string)}
@@ -662,16 +799,11 @@ export default function Worker(props: {
                     listbox: "bg-[#1a1a1a]",
                   }}
                 >
-                  <SelectItem key="1:1" value="1:1">1:1 (正方形)</SelectItem>
-                  <SelectItem key="4:3" value="4:3">4:3</SelectItem>
-                  <SelectItem key="3:2" value="3:2">3:2</SelectItem>
-                  <SelectItem key="2:3" value="2:3">2:3</SelectItem>
-                  <SelectItem key="5:4" value="5:4">5:4</SelectItem>
-                  <SelectItem key="4:5" value="4:5">4:5</SelectItem>
-                  <SelectItem key="3:4" value="3:4">3:4</SelectItem>
-                  <SelectItem key="16:9" value="16:9">16:9</SelectItem>
-                  <SelectItem key="9:16" value="9:16">9:16</SelectItem>
-                  <SelectItem key="21:9" value="21:9">21:9</SelectItem>
+                  {nanoAspectOptions.map((option) => (
+                    <SelectItem key={option.key} value={option.key}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </Select>
               </div>
             </>
@@ -684,9 +816,9 @@ export default function Worker(props: {
             >
               {prediction
                 ? prediction.status === "succeeded"
-                  ? "处理中..."
+                  ? ui[localeKey].processing
                   : prediction.status
-                : "生成中..."}
+                : ui[localeKey].generating}
             </Button>
           ) : (
             <Button
@@ -694,7 +826,7 @@ export default function Worker(props: {
               onClick={handleGenerate}
             >
               <Icon icon="lucide:sparkles" className="w-5 h-5 mr-2" />
-              生成图片 ({calculateRequiredCredits()} 积分)
+              {ui[localeKey].generateButton(calculateRequiredCredits())}
             </Button>
           )}
         </div>

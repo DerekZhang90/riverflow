@@ -27,7 +27,14 @@ export default function Locales() {
   const changeLanguage = (selectedLocale: string) => {
     if (selectedLocale === locale) return;
 
-    router.push(pathname || "/", { locale: selectedLocale as any });
+    const cleanPath = pathname?.split("/").filter(Boolean) ?? [];
+    if (cleanPath[0] === locale) {
+      cleanPath.shift();
+    }
+
+    const nextPath = `/${cleanPath.join("/")}` || "/";
+
+    router.push(nextPath, { locale: selectedLocale as any });
   };
 
   return (
@@ -47,14 +54,16 @@ export default function Locales() {
         selectionMode="single"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
-        className="bg-[#111827] text-white border border-white/10"
+        classNames={{
+          base: "min-w-24 rounded-xl border-none bg-[#0f172a] text-white shadow-2xl shadow-black/50 backdrop-blur-xl outline-none",
+          list: "p-0",
+        }}
+        itemClasses={{
+          base: "text-sm text-slate-100 px-3 py-2 data-[hover=true]:bg-white/10",
+        }}
       >
         {Object.keys(localesName).map((item) => (
-          <DropdownItem
-            key={item}
-            onClick={() => changeLanguage(item)}
-            className="text-sm text-slate-100 hover:bg-white/10"
-          >
+          <DropdownItem key={item} onClick={() => changeLanguage(item)}>
             {localesName[item as keyof typeof localesName]}
           </DropdownItem>
         ))}

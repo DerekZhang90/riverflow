@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
@@ -8,13 +10,13 @@ export function HomeCTA() {
       ? {
           heading: "Ready to create?",
           highlight:
-            "Sign up to claim 20 free credits and generate your first masterpieces in minutes.",
+            "Sign up to claim 5 free credits and generate your first masterpieces in minutes.",
           highlightNote: "No credit card required—start instantly",
           primaryCta: "Create for free",
           secondaryCta: "View pricing",
           trustBadges: [
             "No credit card required",
-            "20 free credits",
+            "5 free credits",
             "Cancel anytime",
           ],
           tiles: [
@@ -40,11 +42,11 @@ export function HomeCTA() {
         }
       : {
           heading: "准备好开始创作了吗？",
-          highlight: "注册即可获得 20 免费积分，几分钟内生成属于你的杰作",
+          highlight: "注册即可获得 5 免费积分，几分钟内生成属于你的杰作",
           highlightNote: "无需信用卡，立即开始创作",
           primaryCta: "免费开始创作",
           secondaryCta: "查看定价",
-          trustBadges: ["无需信用卡", "20 免费积分", "随时取消"],
+          trustBadges: ["无需信用卡", "5 免费积分", "随时取消"],
           tiles: [
             {
               href: "/riverflow",

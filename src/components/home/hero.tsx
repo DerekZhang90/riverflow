@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
@@ -17,7 +19,7 @@ export function HomeHero() {
           secondaryCta: "Learn about RiverFlow",
           stats: [
             { value: "2", label: "Models available" },
-            { value: "20", label: "Free credits" },
+            { value: "5", label: "Free credits" },
             { value: "∞", label: "Creative possibilities" },
           ],
         }
@@ -32,7 +34,7 @@ export function HomeHero() {
           secondaryCta: "了解 RiverFlow",
           stats: [
             { value: "2", label: "可用模型" },
-            { value: "20", label: "免费积分" },
+            { value: "5", label: "免费积分" },
             { value: "∞", label: "无限可能" },
           ],
         };

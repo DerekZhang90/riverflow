@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Divider, Link } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -9,6 +11,7 @@ export default function Footer({ locale }: { locale: string }) {
   const currentLocale = useLocale();
 
   const domain = getDomain();
+  const supportEmail = "zhangshaopu1990@gmail.com";
 
   const description =
     currentLocale === "en"
@@ -38,28 +41,7 @@ export default function Footer({ locale }: { locale: string }) {
       { name: t("legal.item.item2"), href: "/legal/terms-of-service" },
       { name: "Partners", href: "/partners" },
     ],
-    social: [
-      {
-        name: "Facebook",
-        href: "#",
-        icon: "fontisto:facebook",
-      },
-      {
-        name: "Instagram",
-        href: "#",
-        icon: "fontisto:instagram",
-      },
-      {
-        name: "Twitter",
-        href: "#",
-        icon: "fontisto:twitter",
-      },
-      {
-        name: "GitHub",
-        href: "#",
-        icon: "fontisto:github",
-      },
-    ],
+    social: [],
   };
 
   return (
@@ -79,19 +61,6 @@ export default function Footer({ locale }: { locale: string }) {
             <p className="text-sm text-gray-400 text-center xl:text-left leading-relaxed">
               {description}
             </p>
-            {/* 社交媒体图标 */}
-            <div className="flex gap-4 justify-center xl:justify-start">
-              {footerNavigation.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="w-10 h-10 bg-[#1a1a1a] hover:bg-blue-600/20 border border-[#2a2a2a] hover:border-blue-600/50 rounded-lg flex items-center justify-center transition-all duration-300"
-                  aria-label={item.name}
-                >
-                  <Icon icon={item.icon} className="w-5 h-5 text-gray-400 hover:text-blue-400" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* 右侧：导航链接 */}
@@ -165,11 +134,11 @@ export default function Footer({ locale }: { locale: string }) {
                 <ul className="space-y-4">
                   <li className="text-center xl:text-left">
                     <Link
-                      href={`mailto:support@${domain.replace("https://", "")}`}
+                      href={`mailto:${supportEmail}`}
                       className="text-gray-400 hover:text-blue-400 text-sm transition-colors flex items-center justify-center xl:justify-start gap-2"
                     >
                       <Icon icon="mdi:email" className="w-4 h-4" />
-                      <span>support@{domain.replace("https://", "")}</span>
+                      <span>{supportEmail}</span>
                     </Link>
                   </li>
                 </ul>

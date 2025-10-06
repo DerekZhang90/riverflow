@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
@@ -11,7 +13,7 @@ export function HomeModels() {
             id: 2,
             name: "Seedream 4.0",
             description: "High-fidelity image generation with flexible resolutions.",
-            credit: 2,
+            credit: 1,
             href: "/text-to-image?model=seedream-4",
             features: ["4K quality", "Fast rendering", "Diverse styles"],
             gradient: "from-blue-500 to-cyan-500",
@@ -21,7 +23,7 @@ export function HomeModels() {
             id: 3,
             name: "Nano Banana",
             description: "Lightning-fast results ideal for rapid prototyping.",
-            credit: 2,
+            credit: 1,
             href: "/text-to-image?model=nano-banana",
             features: ["Ultra fast", "Creative exploration", "Experiment friendly"],
             gradient: "from-purple-500 to-pink-500",
@@ -33,7 +35,7 @@ export function HomeModels() {
             id: 2,
             name: "Seedream 4.0",
             description: "高质量图片生成，支持文生图和图生图",
-            credit: 2,
+            credit: 1,
             href: "/text-to-image?model=seedream-4",
             features: ["4K 高清", "快速生成", "风格多样"],
             gradient: "from-blue-500 to-cyan-500",
@@ -43,7 +45,7 @@ export function HomeModels() {
             id: 3,
             name: "Nano Banana",
             description: "快速生成，适合快速原型和创意探索",
-            credit: 2,
+            credit: 1,
             href: "/text-to-image?model=nano-banana",
             features: ["超快速度", "创意探索", "实验友好"],
             gradient: "from-purple-500 to-pink-500",
@@ -60,12 +62,6 @@ export function HomeModels() {
           availableLabel: "Available",
           creditsLabel: "Credits / image",
           ctaLabel: "Start now",
-          comingSoonBadge: "Coming soon",
-          comingSoonTitle: "RiverFlow model",
-          comingSoonDescription:
-            "Next-generation image synthesis with higher fidelity, faster inference, and precise controls.",
-          comingSoonPrimary: "Learn more",
-          comingSoonSecondary: "Get notified",
         }
       : {
           heading: "当前可用模型",
@@ -73,11 +69,6 @@ export function HomeModels() {
           availableLabel: "可用",
           creditsLabel: "积分/张",
           ctaLabel: "开始使用",
-          comingSoonBadge: "即将推出",
-          comingSoonTitle: "RiverFlow 模型",
-          comingSoonDescription: "下一代 AI 图片生成技术，更高画质，更快速度，更精准控制",
-          comingSoonPrimary: "了解更多",
-          comingSoonSecondary: "订阅通知",
         };
 
   return (
@@ -152,42 +143,6 @@ export function HomeModels() {
           ))}
         </div>
 
-        {/* RiverFlow Preview */}
-        <div className="mx-auto max-w-5xl">
-          <div className="relative overflow-hidden rounded-2xl border border-blue-600/20 bg-gradient-to-br from-blue-600/10 to-purple-600/10 p-8">
-            {/* Animated background */}
-            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-blue-600/5 to-purple-600/5" />
-
-            <div className="relative z-10 text-center">
-              <div className="mb-4 inline-block rounded-full border border-blue-600/30 bg-blue-600/20 px-4 py-2">
-                <span className="text-sm font-medium text-blue-400">{copy.comingSoonBadge}</span>
-              </div>
-
-              <h3 className="mb-3 text-3xl font-bold text-white">
-                {copy.comingSoonTitle}
-              </h3>
-
-              <p className="mx-auto mb-6 max-w-2xl text-gray-400">
-                {copy.comingSoonDescription}
-              </p>
-
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Link
-                  href="/riverflow"
-                  className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white shadow-lg shadow-blue-600/20 transition-colors hover:bg-blue-700"
-                >
-                  {copy.comingSoonPrimary}
-                </Link>
-                <Link
-                  href="/riverflow#subscribe"
-                  className="rounded-xl border border-[#3a3a3a] bg-[#1a1a1a] px-6 py-3 font-medium text-white transition-colors hover:bg-[#2a2a2a]"
-                >
-                  {copy.comingSoonSecondary}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
