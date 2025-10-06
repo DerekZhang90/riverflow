@@ -39,7 +39,6 @@ export default function Footer({ locale }: { locale: string }) {
     legal: [
       { name: t("legal.item.item1"), href: "/legal/privacy-policy" },
       { name: t("legal.item.item2"), href: "/legal/terms-of-service" },
-      { name: "Partners", href: "/partners" },
     ],
     social: [],
   };

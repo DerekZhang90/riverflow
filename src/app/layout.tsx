@@ -11,6 +11,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/logo.jpeg" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-SV211BP0EQ"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-SV211BP0EQ');
+          `}
+        </Script>
       </head>
       <body>{children}</body>
     </html>

@@ -20,7 +20,7 @@ import {
 import { EyeIcon } from "@nextui-org/shared-icons";
 import { UserSubscriptionInfo } from "@/backend/type/domain/user_subscription_info";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 export default function Dashboard() {
   const { user } = useAppContext();
   const [effectResults, setEffectResults] = useState<EffectResultInfo[]>([]);
@@ -35,7 +35,11 @@ export default function Dashboard() {
   const pageSize = 10;
   const [userSubscriptionInfo, setUserSubscriptionInfo] =
     useState<UserSubscriptionInfo | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  const [previewError, setPreviewError] = useState<string | null>(null);
   const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations("dashboard");
   const fetchUserSubscriptionInfo = async () => {
     if (!user?.uuid) return;
@@ -118,9 +122,119 @@ export default function Dashboard() {
     setPage(newPage);
   };
 
-  const handleViewResult = (result: EffectResultInfo) => {
+  const parseUrlField = (value: unknown): string[] => {
+    if (!value) return [];
+
+    if (Array.isArray(value)) {
+      return value
+        .filter((entry): entry is string => typeof entry === "string")
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+    }
+
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (!trimmed) return [];
+      if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+        try {
+          const parsed = JSON.parse(trimmed);
+          return parseUrlField(parsed);
+        } catch {
+          return [trimmed];
+        }
+      }
+      return [trimmed];
+    }
+
+    if (typeof value === "object" && value !== null) {
+      const maybeUrl = (value as { url?: unknown }).url;
+      if (maybeUrl) return parseUrlField(maybeUrl);
+    }
+
+    return [];
+  };
+
+  const handleViewResult = async (result: EffectResultInfo) => {
     setSelectedResult(result);
     setIsModalOpen(true);
+    setPreviewError(null);
+
+    const fallbackUrls = parseUrlField(result.url);
+    setPreviewUrls(fallbackUrls);
+
+    if (!result.original_id) {
+      return;
+    }
+
+    setIsPreviewLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/effect_result/${encodeURIComponent(result.original_id)}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch result detail: ${response.status}`);
+      }
+
+      const detail = await response.json();
+      const resolved = parseUrlField(detail.url);
+
+      if (resolved.length > 0) {
+        setPreviewUrls(resolved);
+      } else if (fallbackUrls.length === 0 && detail.original_image_url) {
+        const originalUrls = parseUrlField(detail.original_image_url);
+        setPreviewUrls(originalUrls);
+      }
+    } catch (error) {
+      console.error("Failed to fetch result detail:", error);
+      if (fallbackUrls.length === 0) {
+        setPreviewError(
+          locale === "zh"
+            ? "暂时无法加载结果，请稍后再试"
+            : "We could not load this output. Please try again later."
+        );
+      }
+    } finally {
+      setIsPreviewLoading(false);
+    }
+  };
+
+  const renderMedia = (urls: string[]) => {
+    if (!urls.length) return null;
+
+    const videoExtensions = [".mp4", ".webm", ".mov", ".m4v"];
+
+    return urls.map((url, index) => {
+      const lower = url.toLowerCase();
+      const isVideo = videoExtensions.some((ext) => lower.endsWith(ext));
+
+      if (isVideo) {
+        return (
+          <video
+            key={`${url}-${index}`}
+            src={url}
+            controls
+            className="w-full rounded-xl border border-white/10"
+          />
+        );
+      }
+
+      return (
+        <img
+          key={`${url}-${index}`}
+          src={url}
+          alt="Generated result"
+          className="w-full rounded-xl border border-white/10 object-contain"
+          loading="lazy"
+        />
+      );
+    });
+  };
+
+  const isUrlLike = (value?: string) => {
+    if (!value) return false;
+    return /^https?:\/\//i.test(value.trim());
   };
 
   return (
@@ -301,7 +415,9 @@ export default function Dashboard() {
               {t("noResults")}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              开始创建精彩的AI内容吧！
+              {locale === "zh"
+                ? "开始创建精彩的 AI 内容吧！"
+                : "Start a new AI generation to fill this space."}
             </p>
           </div>
         )}
@@ -311,6 +427,8 @@ export default function Dashboard() {
           onClose={() => {
             setIsModalOpen(false);
             setSelectedResult(null);
+            setPreviewUrls([]);
+            setPreviewError(null);
           }}
           size="2xl"
           className="mx-2"
@@ -320,7 +438,23 @@ export default function Dashboard() {
             {selectedResult && (
               <ModalBody>
                 <div className="p-2 md:p-4">
-                  {!selectedResult.url ? (
+                  {isPreviewLoading ? (
+                    <div className="flex min-h-[200px] items-center justify-center">
+                      <Spinner color="primary" label={t("loading")} />
+                    </div>
+                  ) : previewUrls.length > 0 ? (
+                    <div className="space-y-4">
+                      {renderMedia(previewUrls)}
+                    </div>
+                  ) : previewError ? (
+                    <div className="text-center p-4 text-sm text-gray-400">
+                      {previewError}
+                    </div>
+                  ) : selectedResult?.url && !isUrlLike(selectedResult.url) ? (
+                    <div className="whitespace-pre-wrap rounded-xl border border-white/10 bg-black/30 p-4 text-left text-sm text-slate-200">
+                      {selectedResult.url}
+                    </div>
+                  ) : (
                     <div className="text-center p-4">
                       <p className="text-gray-500 mb-2">
                         {t("modal.noContent")}
@@ -330,39 +464,6 @@ export default function Dashboard() {
                         {t("modal.status")}: {selectedResult.status}
                       </p>
                     </div>
-                  ) : selectedResult.effect_name === "chat-with-images" ? (
-                    <div className="whitespace-pre-wrap text-xs md:text-base">
-                      {selectedResult.url}
-                    </div>
-                  ) : // Check if the URL is a video file (by extension or effect name)
-                  selectedResult.url.endsWith(".mp4") ||
-                    selectedResult.url.endsWith(".webm") ||
-                    selectedResult.url.endsWith(".mov") ||
-                    selectedResult.effect_name === "ai-kissing-video" ||
-                    selectedResult.effect_name === "text-to-video" ||
-                    selectedResult.effect_name === "ai-dancing" ||
-                    selectedResult.effect_name.includes("video") ||
-                    selectedResult.effect_name.includes("dance") ? (
-                    <video
-                      src={selectedResult.url}
-                      className="w-full h-auto rounded-lg shadow-lg"
-                      controls
-                      onError={(e) => {
-                        console.error("Video load error:", e);
-                        console.error("Video URL:", selectedResult.url);
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src={selectedResult.url}
-                      alt="Result"
-                      className="w-full h-auto rounded-lg shadow-lg"
-                      loading="lazy"
-                      onError={(e) => {
-                        console.error("Image load error:", e);
-                        console.error("Image URL:", selectedResult.url);
-                      }}
-                    />
                   )}
                 </div>
               </ModalBody>
