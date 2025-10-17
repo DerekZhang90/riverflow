@@ -5,7 +5,7 @@
   <!-- English Homepage -->
   <url>
     <loc>https://riverflow.art/</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/" />
@@ -15,7 +15,7 @@
   <!-- Chinese Homepage -->
   <url>
     <loc>https://riverflow.art/zh/</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/" />
@@ -25,7 +25,7 @@
   <!-- RiverFlow Page - English -->
   <url>
     <loc>https://riverflow.art/riverflow</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/riverflow" />
@@ -35,7 +35,7 @@
   <!-- RiverFlow Page - Chinese -->
   <url>
     <loc>https://riverflow.art/zh/riverflow</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/riverflow" />
@@ -45,7 +45,7 @@
   <!-- Text to Image - English -->
   <url>
     <loc>https://riverflow.art/text-to-image</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/text-to-image" />
@@ -55,7 +55,7 @@
   <!-- Text to Image - Chinese -->
   <url>
     <loc>https://riverflow.art/zh/text-to-image</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/text-to-image" />
@@ -65,7 +65,7 @@
   <!-- Pricing - English -->
   <url>
     <loc>https://riverflow.art/pricing</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/pricing" />
@@ -75,7 +75,7 @@
   <!-- Pricing - Chinese -->
   <url>
     <loc>https://riverflow.art/zh/pricing</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://riverflow.art/pricing" />
@@ -85,7 +85,7 @@
   <!-- Privacy Policy - English -->
   <url>
     <loc>https://riverflow.art/legal/privacy-policy</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -93,7 +93,7 @@
   <!-- Privacy Policy - Chinese -->
   <url>
     <loc>https://riverflow.art/zh/legal/privacy-policy</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -101,7 +101,7 @@
   <!-- Terms of Service - English -->
   <url>
     <loc>https://riverflow.art/legal/terms-of-service</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -109,7 +109,7 @@
   <!-- Terms of Service - Chinese -->
   <url>
     <loc>https://riverflow.art/zh/legal/terms-of-service</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
+    <lastmod>2025-10-17T04:20:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
