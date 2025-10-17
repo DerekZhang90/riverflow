@@ -15,8 +15,8 @@ export default function Footer({ locale }: { locale: string }) {
 
   const description =
     currentLocale === "en"
-      ? "RiverFlow.art is a leading AI image platform, delivering advanced tools to craft breathtaking visuals."
-      : "RiverFlow.art 是一个领先的 AI 图片生成平台，使用先进的人工智能技术创作精美图片。";
+      ? "RiverFlow.art is a leading AI image generation platform powered by RiverFlow technology. Experience RiverFlow AI with advanced tools to craft breathtaking 4K visuals using Seedream and Nano Banana models."
+      : "RiverFlow.art 是领先的 AI 图片生成平台，采用 RiverFlow 技术驱动。体验 RiverFlow AI，使用 Seedream 和 Nano Banana 模型创作精美的 4K 图片。";
 
   const footerNavigation = {
     supportOptions: [

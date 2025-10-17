@@ -56,16 +56,16 @@ export function HomeModels() {
   const copy =
     locale === "en"
       ? {
-          heading: "Available models",
+          heading: "RiverFlow Available Models",
           description:
-            "Choose the AI engine that suits your workflow—each delivers a distinct look and speed profile.",
+            "Choose from RiverFlow-powered AI engines that suit your workflow—each delivers a distinct look and speed profile.",
           availableLabel: "Available",
           creditsLabel: "Credits / image",
           ctaLabel: "Start now",
         }
       : {
-          heading: "当前可用模型",
-          description: "选择适合你的 AI 模型开始创作，每个模型都有独特的风格和特点",
+          heading: "RiverFlow 可用模型",
+          description: "选择适合你的 RiverFlow 驱动 AI 模型开始创作，每个模型都有独特的风格和特点",
           availableLabel: "可用",
           creditsLabel: "积分/张",
           ctaLabel: "开始使用",

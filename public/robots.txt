@@ -1,7 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard
-Disallow: /legal/
+Disallow: /dashboard/*
+Disallow: /api/
+Disallow: /_next/
 
 User-agent: GPTBot
 User-agent: Claude-Web
@@ -13,6 +15,7 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /
 Disallow: /dashboard
-Disallow: /legal/
+Disallow: /dashboard/*
+Disallow: /api/
 
-Sitemap: https://xxxx.com/sitemap.xml
+Sitemap: https://riverflow.art/sitemap.xml

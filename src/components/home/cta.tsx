@@ -23,27 +23,27 @@ export function HomeCTA() {
             {
               href: "/riverflow",
               emoji: "🚀",
-              title: "RiverFlow model",
-              description: "Preview our flagship model coming soon.",
+              title: "RiverFlow Next-Gen Model",
+              description: "Preview the RiverFlow flagship model coming soon.",
             },
             {
               href: "/dashboard",
               emoji: "📊",
-              title: "My creations",
-              description: "Review history and manage credits.",
+              title: "My RiverFlow Creations",
+              description: "Review RiverFlow generation history and credits.",
             },
             {
               href: "/pricing",
               emoji: "💎",
-              title: "Pricing plans",
-              description: "Find the plan that fits your workflow.",
+              title: "RiverFlow Pricing",
+              description: "Find the RiverFlow plan that fits your workflow.",
             },
           ],
         }
       : {
-          heading: "准备好开始创作了吗？",
-          highlight: "注册即可获得 5 免费积分，几分钟内生成属于你的杰作",
-          highlightNote: "无需信用卡，立即开始创作",
+          heading: "准备好开始 RiverFlow 创作了吗？",
+          highlight: "注册即可获得 5 免费积分，几分钟内用 RiverFlow 生成属于你的杰作",
+          highlightNote: "无需信用卡，立即开始 RiverFlow 创作",
           primaryCta: "免费开始创作",
           secondaryCta: "查看定价",
           trustBadges: ["无需信用卡", "5 免费积分", "随时取消"],
@@ -51,8 +51,8 @@ export function HomeCTA() {
             {
               href: "/riverflow",
               emoji: "🚀",
-              title: "RiverFlow 模型",
-              description: "了解即将推出的旗舰模型",
+              title: "RiverFlow 下一代模型",
+              description: "了解即将推出的 RiverFlow 旗舰模型",
             },
             {
               href: "/dashboard",

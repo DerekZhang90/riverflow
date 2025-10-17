@@ -75,8 +75,8 @@ export function HomeFeatures() {
   const copy =
     locale === "en"
       ? {
-          heading: "Powerful features",
-          description: "Let AI accelerate your creative flow and unlock new directions.",
+          heading: "Powerful RiverFlow Features",
+          description: "Let RiverFlow AI accelerate your creative flow and unlock new directions.",
           stats: [
             { value: "20+", label: "Style presets" },
             { value: "4K", label: "Ultra HD output" },
@@ -85,8 +85,8 @@ export function HomeFeatures() {
           ],
         }
       : {
-          heading: "强大的功能",
-          description: "让 AI 成为你的创作助手，释放无限创意可能",
+          heading: "RiverFlow 强大功能",
+          description: "让 RiverFlow AI 成为你的创作助手，释放无限创意可能",
           stats: [
             { value: "20+", label: "艺术风格" },
             { value: "4K", label: "超高清画质" },
