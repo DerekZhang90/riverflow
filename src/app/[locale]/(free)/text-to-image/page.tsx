@@ -10,17 +10,33 @@ export async function generateMetadata({
 
   if (locale === "en") {
     return {
-      title: "AI Image Generator - Seedream V4 & Nano Banana | Free Credits",
+      title: "Free AI Image Generator - Seedream V4 & Nano Banana | Free Credits",
       description:
         "Create stunning visuals with Seedream V4 and Nano Banana AI models. Supports both text-to-image and image-to-image workflows with free starter credits.",
-      keywords: "AI image generation, Seedream, Nano Banana, text to image, image to image, AI art",
+      keywords: "AI image generation, Seedream, Nano Banana, text to image, image to image, AI art, free AI generator",
+      alternates: {
+        canonical: 'https://riverflow.art/text-to-image',
+        languages: {
+          'x-default': 'https://riverflow.art/text-to-image',
+          'en': 'https://riverflow.art/text-to-image',
+          'zh': 'https://riverflow.art/zh/text-to-image',
+        },
+      },
     };
   }
 
   return {
-    title: "AI 图片生成 - Seedream V4 & Nano Banana | 免费体验",
+    title: "免费 AI 图片生成 - Seedream V4 & Nano Banana | 免费体验",
     description: "使用 Seedream V4 和 Nano Banana AI 模型生成精美图片。支持文生图和图生图，多种尺寸和分辨率，免费积分立即开始创作。",
-    keywords: "AI 图片生成, Seedream, Nano Banana, 文生图, 图生图, AI 绘画",
+    keywords: "AI 图片生成, Seedream, Nano Banana, 文生图, 图生图, AI 绘画, 免费 AI 生成器",
+    alternates: {
+      canonical: 'https://riverflow.art/zh/text-to-image',
+      languages: {
+        'x-default': 'https://riverflow.art/text-to-image',
+        'en': 'https://riverflow.art/text-to-image',
+        'zh': 'https://riverflow.art/zh/text-to-image',
+      },
+    },
   };
 }
 
@@ -36,10 +52,10 @@ export default function TextToImage({
 
   const copy = isEnglish
     ? {
-        badge: "AI Image Studio",
+        badge: "Free AI Image Studio",
         headingLine1: "Create with AI",
         headingLine2: "Stunning Imagery",
-        subtitle: "Supports both text-to-image and image-to-image workflows",
+        subtitle: "Free AI Image Studio - Supports both text-to-image and image-to-image workflows",
         highlights: [
           { color: "bg-green-400", label: "Seedream V4" },
           { color: "bg-purple-400", label: "Nano Banana" },
@@ -47,10 +63,10 @@ export default function TextToImage({
         ],
       }
     : {
-        badge: "AI 图片生成",
+        badge: "免费 AI 图片生成",
         headingLine1: "使用 AI 创作",
         headingLine2: "精美图片",
-        subtitle: "支持文生图和图生图两种模式",
+        subtitle: "免费 AI 图片生成 - 支持文生图和图生图两种模式",
         highlights: [
           { color: "bg-green-400", label: "Seedream V4" },
           { color: "bg-purple-400", label: "Nano Banana" },

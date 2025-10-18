@@ -42,6 +42,7 @@ export async function generateMetadata({
       alternates: {
         canonical: 'https://riverflow.art',
         languages: {
+          'x-default': 'https://riverflow.art',
           'en': 'https://riverflow.art',
           'zh': 'https://riverflow.art/zh',
         },
@@ -78,6 +79,7 @@ export async function generateMetadata({
       alternates: {
         canonical: 'https://riverflow.art/zh',
         languages: {
+          'x-default': 'https://riverflow.art',
           'en': 'https://riverflow.art',
           'zh': 'https://riverflow.art/zh',
         },
